@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bringanapló</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h1>🚲 Bringanapló - Biciklizéseim</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Dátum</th>
+        <th>Távolság (km)</th>
+        <th>Időtartam (perc)</th>
+        <th>Megjegyzés</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bringa : ${biciklizesek}">
+        <td th:text="${bringa.datum}">2026-04-13</td>
+        <td th:text="${bringa.tavolsagKm}">0.0</td>
+        <td th:text="${bringa.idotartamPerc}">0</td>
+        <td th:text="${bringa.megjegyzes}">Nincs megjegyzés</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
