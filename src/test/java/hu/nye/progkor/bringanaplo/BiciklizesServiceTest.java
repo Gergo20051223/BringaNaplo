@@ -1,46 +1,78 @@
 package hu.nye.progkor.bringanaplo;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 class BiciklizesServiceTest {
+
+    @Mock
+    private BiciklizesRepository repository;
 
     private BiciklizesService underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new BiciklizesService();
+        underTest = new BiciklizesService(repository);
     }
 
     @Test
-    void testOsszesBiciklizesShouldReturnInitialList() {
-        assertEquals(1, underTest.osszesBiciklizes().size());
+    void testOsszesBiciklizesShouldReturnList() {
+        // Given
+        when(repository.findAll()).thenReturn(List.of(new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt")));
+        // When
+        List<Biciklizes> result = underTest.osszesBiciklizes();
+        // Then
+        assertEquals(1, result.size());
+        verify(repository).findAll();
     }
 
     @Test
-    void testMenteseShouldAddNote() {
+    void testMenteseShouldCallRepository() {
+        // Given
         Biciklizes uj = new Biciklizes(null, LocalDate.now(), 10.0, 30, "Teszt");
+        // When
         underTest.mentese(uj);
-        assertEquals(2, underTest.osszesBiciklizes().size());
+        // Then
+        verify(repository).save(uj);
     }
 
-    // EZT ADJUK HOZZÁ: Törlés tesztelése
     @Test
-    void testTorlesShouldRemoveItem() {
-        Long id = underTest.osszesBiciklizes().get(0).getId();
-        underTest.torles(id);
-        assertTrue(underTest.osszesBiciklizes().isEmpty());
+    void testTorlesShouldCallRepository() {
+        // When
+        underTest.torles(1L);
+        // Then
+        verify(repository).deleteById(1L);
     }
 
-    // EZT ADJUK HOZZÁ: Keresés tesztelése
     @Test
     void testGetByIdShouldReturnCorrectItem() {
-        Long id = underTest.osszesBiciklizes().get(0).getId();
-        Biciklizes found = underTest.getById(id);
-        assertNotNull(found);
-        assertEquals(id, found.getId());
+        // Given
+        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt");
+        when(repository.findById(1L)).thenReturn(Optional.of(bringa));
+        // When
+        Biciklizes result = underTest.getById(1L);
+        // Then
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+    }
+
+    @Test
+    void testFrissitesShouldCallRepository() {
+        // Given
+        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Modositott");
+        // When
+        underTest.frissites(bringa);
+        // Then
+        verify(repository).save(bringa);
     }
 }
