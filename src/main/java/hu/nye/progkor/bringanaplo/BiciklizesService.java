@@ -1,48 +1,34 @@
 package hu.nye.progkor.bringanaplo;
 
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BiciklizesService {
 
-    private final List<Biciklizes> lista = new ArrayList<>();
+    private final BiciklizesRepository repository;
 
-    public BiciklizesService() {
-        lista.add(new Biciklizes(1L, java.time.LocalDate.now(), 15.5, 45, "Szuper idő volt!"));
+    public BiciklizesService(BiciklizesRepository repository) {
+        this.repository = repository;
     }
 
     public List<Biciklizes> osszesBiciklizes() {
-        return lista;
+        return repository.findAll();
     }
 
     public void mentese(Biciklizes biciklizes) {
-        if (biciklizes.getId() == null) {
-            biciklizes.setId(System.currentTimeMillis());
-        }
-        lista.add(biciklizes);
+        repository.save(biciklizes);
     }
 
-    // Megkeres egy konkrét bringázást az ID alapján (ez kell a szerkesztéshez)
     public Biciklizes getById(Long id) {
-        return lista.stream()
-                .filter(b -> b.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
-    // Frissíti a meglévő adatokat
     public void frissites(Biciklizes frissitett) {
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getId().equals(frissitett.getId())) {
-                lista.set(i, frissitett);
-                break;
-            }
-        }
+        repository.save(frissitett);
     }
 
     public void torles(Long id) {
-        lista.removeIf(b -> b.getId().equals(id));
+        repository.deleteById(id);
     }
 }

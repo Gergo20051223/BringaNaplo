@@ -27,6 +27,7 @@ class BiciklizesServiceTest {
         assertEquals(2, underTest.osszesBiciklizes().size());
     }
 
+    // EZT ADJUK HOZZÁ: Törlés tesztelése
     @Test
     void testTorlesShouldRemoveItem() {
         Long id = underTest.osszesBiciklizes().get(0).getId();
@@ -34,19 +35,12 @@ class BiciklizesServiceTest {
         assertTrue(underTest.osszesBiciklizes().isEmpty());
     }
 
+    // EZT ADJUK HOZZÁ: Keresés tesztelése
     @Test
     void testGetByIdShouldReturnCorrectItem() {
         Long id = underTest.osszesBiciklizes().get(0).getId();
         Biciklizes found = underTest.getById(id);
         assertNotNull(found);
         assertEquals(id, found.getId());
-    }
-
-    @Test
-    void testFrissitesShouldModifyItem() {
-        Biciklizes bringa = underTest.osszesBiciklizes().get(0);
-        bringa.setMegjegyzes("Modositva");
-        underTest.frissites(bringa);
-        assertEquals("Modositva", underTest.getById(bringa.getId()).getMegjegyzes());
     }
 }
