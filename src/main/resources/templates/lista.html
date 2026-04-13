@@ -15,63 +15,39 @@
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
         button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #45a049; }
+        .btn-edit { color: #337ab7; text-decoration: none; font-weight: bold; margin-right: 10px; }
         .btn-delete { color: #d9534f; text-decoration: none; font-weight: bold; }
-        .btn-delete:hover { color: #c9302c; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h1>🚲 Bringanapló - Admin Felület</h1>
-
+    <h1>🚲 Bringanapló - Admin</h1>
     <h2>Új biciklizés rögzítése</h2>
     <form th:action="@{/mentes}" method="post">
-        <div class="form-group">
-            <label>Dátum:</label>
-            <input type="date" name="datum" required>
-        </div>
-        <div class="form-group">
-            <label>Távolság (km):</label>
-            <input type="number" step="0.1" name="tavolsagKm" required>
-        </div>
-        <div class="form-group">
-            <label>Időtartam (perc):</label>
-            <input type="number" name="idotartamPerc" required>
-        </div>
-        <div class="form-group">
-            <label>Megjegyzés:</label>
-            <input type="text" name="megjegyzes">
-        </div>
-        <button type="submit">Hozzáadás a listához</button>
+        <div class="form-group"><label>Dátum:</label><input type="date" name="datum" required></div>
+        <div class="form-group"><label>Távolság (km):</label><input type="number" step="0.1" name="tavolsagKm" required></div>
+        <div class="form-group"><label>Időtartam (perc):</label><input type="number" name="idotartamPerc" required></div>
+        <div class="form-group"><label>Megjegyzés:</label><input type="text" name="megjegyzes"></div>
+        <button type="submit">Hozzáadás</button>
     </form>
-
     <hr>
-
-    <h2>Eddigi tekerések</h2>
     <table>
         <thead>
-        <tr>
-            <th>Dátum</th>
-            <th>Távolság (km)</th>
-            <th>Időtartam (perc)</th>
-            <th>Megjegyzés</th>
-            <th>Műveletek</th>
-        </tr>
+        <tr><th>Dátum</th><th>Távolság</th><th>Idő</th><th>Megjegyzés</th><th>Műveletek</th></tr>
         </thead>
         <tbody>
         <tr th:each="bringa : ${biciklizesek}">
             <td th:text="${bringa.datum}"></td>
-            <td th:text="${bringa.tavolsagKm}"></td>
-            <td th:text="${bringa.idotartamPerc}"></td>
+            <td th:text="${bringa.tavolsagKm} + ' km'"></td>
+            <td th:text="${bringa.idotartamPerc} + ' perc'"></td>
             <td th:text="${bringa.megjegyzes}"></td>
             <td>
-                <a th:href="@{/torles/{id}(id=${bringa.id})}" class="btn-delete">Törlés</a>
+                <a th:href="@{/szerkesztes/{id}(id=${bringa.id})}" class="btn-edit">Szerkesztés</a>
+                <a th:href="@{/torles/{id}(id=${bringa.id})}" class="btn-delete" onclick="return confirm('Biztos törlöd?')">Törlés</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

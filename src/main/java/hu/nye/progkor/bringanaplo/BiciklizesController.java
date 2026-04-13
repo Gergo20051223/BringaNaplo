@@ -16,21 +16,32 @@ public class BiciklizesController {
         this.biciklizesService = biciklizesService;
     }
 
-    // Kilistázza a bringázásokat a localhost:8080/bringak címen
     @GetMapping("/bringak")
     public String listaz(Model model) {
         model.addAttribute("biciklizesek", biciklizesService.osszesBiciklizes());
         return "lista";
     }
 
-    // Kezeli az űrlapról érkező mentést
     @PostMapping("/mentes")
     public String mentes(@ModelAttribute Biciklizes ujBiciklizes) {
         biciklizesService.mentese(ujBiciklizes);
         return "redirect:/bringak";
     }
 
-    // Kezeli a törlés gombra kattintást
+    // Szerkesztő oldal megnyitása
+    @GetMapping("/szerkesztes/{id}")
+    public String szerkesztesForm(@PathVariable Long id, Model model) {
+        model.addAttribute("biciklizes", biciklizesService.getById(id));
+        return "szerkesztes";
+    }
+
+    // Módosított adatok mentése
+    @PostMapping("/frissites")
+    public String frissites(@ModelAttribute Biciklizes biciklizes) {
+        biciklizesService.frissites(biciklizes);
+        return "redirect:/bringak";
+    }
+
     @GetMapping("/torles/{id}")
     public String torles(@PathVariable Long id) {
         biciklizesService.torles(id);
