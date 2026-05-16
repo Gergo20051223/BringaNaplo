@@ -28,7 +28,7 @@ class BiciklizesServiceTest {
     @Test
     void testOsszesBiciklizesShouldReturnList() {
         // Given
-        when(repository.findAll()).thenReturn(List.of(new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt")));
+        when(repository.findAll()).thenReturn(List.of(new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt", null)));
         // When
         List<Biciklizes> result = underTest.osszesBiciklizes();
         // Then
@@ -39,7 +39,7 @@ class BiciklizesServiceTest {
     @Test
     void testMenteseShouldCallRepository() {
         // Given
-        Biciklizes uj = new Biciklizes(null, LocalDate.now(), 10.0, 30, "Teszt");
+        Biciklizes uj = new Biciklizes(null, LocalDate.now(), 10.0, 30, "Teszt", null);
         // When
         underTest.mentese(uj);
         // Then
@@ -57,7 +57,7 @@ class BiciklizesServiceTest {
     @Test
     void testGetByIdShouldReturnCorrectItem() {
         // Given
-        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt");
+        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Teszt", null);
         when(repository.findById(1L)).thenReturn(Optional.of(bringa));
         // When
         Biciklizes result = underTest.getById(1L);
@@ -68,11 +68,10 @@ class BiciklizesServiceTest {
 
     @Test
     void testFrissitesShouldCallRepository() {
-        // Given
-        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Modositott");
-        // When
+        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Modositott", null);
+
         underTest.frissites(bringa);
-        // Then
+
         verify(repository).save(bringa);
     }
 }
