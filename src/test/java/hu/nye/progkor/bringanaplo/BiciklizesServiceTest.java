@@ -68,10 +68,15 @@ class BiciklizesServiceTest {
 
     @Test
     void testFrissitesShouldCallRepository() {
-        Biciklizes bringa = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Modositott", null);
+        // Given
+        Biciklizes regi = new Biciklizes(1L, LocalDate.now(), 10.0, 30, "Regi", null);
+        Biciklizes ujAdat = new Biciklizes(1L, LocalDate.now(), 20.0, 60, "Uj", null);
+        when(repository.findById(1L)).thenReturn(Optional.of(regi));
 
-        underTest.frissites(bringa);
+        // When
+        underTest.frissites(1L, ujAdat);
 
-        verify(repository).save(bringa);
+        // Then
+        verify(repository).save(regi);
     }
 }

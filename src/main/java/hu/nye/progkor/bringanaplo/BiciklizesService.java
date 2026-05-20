@@ -24,8 +24,13 @@ public class BiciklizesService {
         return repository.findById(id).orElse(null);
     }
 
-    public void frissites(Biciklizes frissitett) {
-        repository.save(frissitett);
+    public Biciklizes frissites(Long id, Biciklizes ujAdatok) {
+        Biciklizes regi = repository.findById(id).orElseThrow();
+        regi.setDatum(ujAdatok.getDatum());
+        regi.setTavolsagKm(ujAdatok.getTavolsagKm());
+        regi.setIdotartamPerc(ujAdatok.getIdotartamPerc());
+        regi.setMegjegyzes(ujAdatok.getMegjegyzes());
+        return repository.save(regi);
     }
 
     public void torles(Long id) {

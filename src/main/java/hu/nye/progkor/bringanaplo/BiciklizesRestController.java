@@ -24,6 +24,11 @@ public class BiciklizesRestController {
         return biciklizes;
     }
 
+    @PutMapping("/{id}")
+    public Biciklizes update(@PathVariable Long id, @RequestBody Biciklizes biciklizes) {
+        return service.frissites(id, biciklizes);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.torles(id);
